@@ -29,10 +29,12 @@
     font-weight: 700;
   }
   
+  height: 100vh;
   font-family: 'Roboto', sans-serif;
   padding: 20px;
   color: @white;
   box-sizing: border-box;
+  overflow: auto;
 }
 
 header {
@@ -45,7 +47,13 @@ header {
   font-weight: bold;
   font-size: x-large;
   color: @white;
+  position: sticky;
 }
+
+.add-new-btn{
+  position: sticky;
+}
+
 
 .employee-form {
     background: @primary-color;
@@ -54,6 +62,7 @@ header {
     margin: 20px auto;
     max-width: 26rem;
     min-width: 16rem;
+    position: sticky;
 }
 
 .form-group {
@@ -171,4 +180,8 @@ header {
 
 .label {
   font-weight: bold;
+}
+
+.loading, .no-employees-found {
+  color: @primary-color
 }

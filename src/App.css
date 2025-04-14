@@ -3,26 +3,20 @@
   padding: 0;
   box-sizing: border-box;
 }
-body {
-  font-family: 'Roboto', sans-serif;
-  margin: 0;
-  color: white;
-}
-textarea:focus,
-input:focus {
-  outline: none;
-}
-header {
-  background-color: blueviolet;
-  height: 5rem;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-weight: bold;
-  font-size: x-large;
-}
 .app-content {
+  height: 100vh;
+  font-family: 'Roboto', sans-serif;
   padding: 20px;
+  color: white;
+  box-sizing: border-box;
+  overflow: auto;
+}
+.app-content input {
+  min-width: 0;
+}
+.app-content textarea:focus,
+.app-content input:focus {
+  outline: none;
 }
 .app-content button {
   border: none;
@@ -33,12 +27,29 @@ header {
   border-radius: 8px;
   font-weight: 700;
 }
+header {
+  font-family: 'Roboto', sans-serif;
+  background-color: blueviolet;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-weight: bold;
+  font-size: x-large;
+  color: white;
+  position: sticky;
+}
+.add-new-btn {
+  position: sticky;
+}
 .employee-form {
   background: blueviolet;
   padding: 20px;
   border-radius: 5px;
   margin: 20px auto;
-  width: 325px;
+  max-width: 26rem;
+  min-width: 16rem;
+  position: sticky;
 }
 .form-group {
   margin-bottom: 15px;
@@ -69,35 +80,28 @@ header {
   font-weight: bold;
 }
 .search-bar {
-  color: black;
-  width: 22rem;
-  margin: 0 auto;
   display: flex;
-  align-items: center;
   gap: 0.5rem;
+  align-items: center;
+  max-width: 26rem;
+  min-width: 16rem;
+  margin: 10px auto 40px auto;
+  padding: 0.5rem;
   border: 2px solid blueviolet;
   border-radius: 0.75rem;
-  padding: 0.5rem;
-  margin-top: 16px;
-  margin-bottom: 40px;
+  color: blueviolet;
 }
 .search-input {
   flex-grow: 1;
   border: none;
 }
-.employee-list {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
-}
 .employee-item {
-  width: 60%;
-  max-width: 28rem;
-  min-width: 22rem;
+  max-width: 26rem;
+  min-width: 16rem;
+  margin: 0 auto 16px auto;
   padding: 24px;
-  background-color: blueviolet;
   border-radius: 8px;
+  background-color: blueviolet;
   color: white;
 }
 .employee-item input {
@@ -147,4 +151,7 @@ header {
 .label {
   font-weight: bold;
 }
-/*# sourceMappingURL=App.css.map */
+.loading,
+.no-employees-found {
+  color: blueviolet;
+}
