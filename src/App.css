@@ -3,29 +3,8 @@
   padding: 0;
   box-sizing: border-box;
 }
-.app-content {
-  height: 100vh;
-  font-family: 'Roboto', sans-serif;
-  padding: 20px;
-  color: white;
-  box-sizing: border-box;
-  overflow: auto;
-}
-.app-content input {
-  min-width: 0;
-}
-.app-content textarea:focus,
-.app-content input:focus {
-  outline: none;
-}
-.app-content button {
-  border: none;
-  background-color: blueviolet;
-  font-family: 'Roboto', sans-serif;
-  color: white;
-  padding: 12px;
-  border-radius: 8px;
-  font-weight: 700;
+button {
+  cursor: pointer;
 }
 header {
   font-family: 'Roboto', sans-serif;
@@ -37,41 +16,113 @@ header {
   font-weight: bold;
   font-size: x-large;
   color: white;
-  position: sticky;
 }
-.add-new-btn {
-  position: sticky;
+footer {
+  font-family: 'Roboto', sans-serif;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: white;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
-.employee-form {
+footer .pagination {
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+footer .pagination .pagination-button {
+  border: none;
+  background-color: blueviolet;
+  color: white;
+  border-radius: 50%;
+  font-weight: 700;
+  height: 30px;
+  width: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+footer .pagination .pagination-button i {
+  font-size: 18px;
+}
+footer .pagination .pagination-numbers {
+  height: 50px;
+  background-color: blueviolet;
+  color: white;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+footer .pagination .pagination-number {
+  cursor: pointer;
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+footer .pagination .pagination-number.active {
+  color: blueviolet;
+  background-color: white;
+}
+.app-content {
+  font-family: 'Roboto', sans-serif;
+  padding: 20px;
+  color: white;
+  box-sizing: border-box;
+}
+.app-content input {
+  width: 0;
+}
+.app-content textarea:focus,
+.app-content input:focus {
+  outline: none;
+}
+.app-content button {
+  border: none;
+  background-color: blueviolet;
+  color: white;
+  padding: 12px;
+  border-radius: 8px;
+  font-weight: 700;
+}
+.app-content .employee-form {
   background: blueviolet;
   padding: 20px;
   border-radius: 5px;
   margin: 20px auto;
   max-width: 26rem;
   min-width: 16rem;
-  position: sticky;
 }
-.form-group {
+.app-content .form-group {
   margin-bottom: 15px;
 }
-.form-group label {
+.app-content .form-group label {
   display: block;
   margin-bottom: 5px;
   font-weight: bold;
 }
-.form-group input {
+.app-content .form-group input {
   width: 100%;
   padding: 8px;
   border: 1px solid #ddd;
   border-radius: 4px;
   box-sizing: border-box;
 }
-.form-actions {
+.app-content .form-actions {
   display: flex;
   justify-content: center;
   gap: 12px;
 }
-.form-actions button {
+.app-content .form-actions button {
   background-color: white;
   border-radius: 8px;
   padding: 8px;
@@ -79,23 +130,48 @@ header {
   width: 64px;
   font-weight: bold;
 }
-.search-bar {
+.app-content .search-container {
   display: flex;
-  gap: 0.5rem;
   align-items: center;
+  justify-content: space-between;
   max-width: 26rem;
   min-width: 16rem;
   margin: 10px auto 40px auto;
-  padding: 0.5rem;
+  gap: 12px;
+}
+.app-content .search-bar {
+  flex-grow: 1;
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  padding: 10px;
   border: 2px solid blueviolet;
   border-radius: 0.75rem;
   color: blueviolet;
 }
-.search-input {
+.app-content .toggle-switch {
+  display: flex;
+  border-radius: 50px;
+  border: 2px solid blueviolet;
+  background-color: blueviolet;
+}
+.app-content .toggle-option {
+  padding: 10px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  color: white;
+  margin: 0.8px;
+  border-radius: 50px;
+}
+.app-content .toggle-option.active {
+  background-color: white;
+  color: blueviolet;
+}
+.app-content .search-input {
   flex-grow: 1;
   border: none;
 }
-.employee-item {
+.app-content .employee-item {
   max-width: 26rem;
   min-width: 16rem;
   margin: 0 auto 16px auto;
@@ -104,13 +180,13 @@ header {
   background-color: blueviolet;
   color: white;
 }
-.employee-item input {
+.app-content .employee-item input {
   border: none;
   background-color: transparent;
   color: inherit;
   font: inherit;
 }
-.employee-header {
+.app-content .employee-header {
   display: flex;
   justify-content: space-between;
   margin-bottom: 4px;
@@ -118,40 +194,57 @@ header {
   font-size: 20px;
   font-weight: bold;
 }
-.employee-actions {
+.app-content .employee-name {
+  flex: 1;
+}
+.app-content .employee-actions {
   display: flex;
   justify-content: space-between;
   gap: 8px;
 }
-.employee-actions button {
+.app-content .employee-actions button {
   background-color: white;
   border-radius: 4px;
   color: blueviolet;
   padding: 6px;
   font-size: 14px;
 }
-.employee-details {
+.app-content .employee-details {
   display: flex;
   flex-direction: column;
   gap: 16px;
   margin-top: 24px;
 }
-.detail-item {
+.app-content .detail-item {
   display: flex;
   align-items: center;
   gap: 10px;
 }
-.detail-item i {
+.app-content .detail-item i {
   font-size: 18px;
 }
-.detail-item input {
-  flex: 1;
+.app-content .detail-item > :last-child {
+  flex-grow: 1;
   text-align: right;
 }
-.label {
+.app-content .detail-item .manager-link {
+  flex: 1;
+  text-align: right;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.app-content .detail-item .manager-link:hover {
   font-weight: bold;
 }
-.loading,
-.no-employees-found {
+.app-content .label {
+  font-weight: bold;
+}
+.app-content .no-employees-found,
+.app-content .loading {
   color: blueviolet;
 }
+.app-content .pagination {
+  display: flex;
+  background: white;
+}
+/*# sourceMappingURL=App.css.map */
