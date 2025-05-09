@@ -1,10 +1,17 @@
 import React, { useState } from 'react';
 
-export default function SearchBar({value, setValue, searchType, setSearchType, onSearch}){   
+export default function SearchBar({value, setValue, refreshEmployeeData}) {   
     function handleChange(e){
         setValue(e.target.value);
     }
     
+    const handleKeyUp = e => {
+        if (e.key === 'Enter') {
+          refreshEmployeeData();
+        }
+    };
+
+
     return (
         <div className="search-container">
             <section className="search-bar">
@@ -12,15 +19,16 @@ export default function SearchBar({value, setValue, searchType, setSearchType, o
                 <input 
                     className="search-input" 
                     placeholder="Search by employee..."
-                    value={value} 
+                    value={value}
                     onChange={handleChange}
+                    onKeyUp={handleKeyUp}
                 />
             </section>
             
             <button 
                 className="search-button"
                 onMouseDown={e => e.preventDefault()}
-                onClick={() => {onSearch}}
+                onClick={refreshEmployeeData}
             >
                 Search
             </button>

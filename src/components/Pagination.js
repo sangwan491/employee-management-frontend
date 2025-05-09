@@ -1,6 +1,6 @@
 import React from 'react';
 
-const Pagination = ({ currentPage, setCurrentPage, pagesArray, totalPages, handleSearch }) => {
+const Pagination = ({ currentPage, setCurrentPage, pagesArray, totalPages }) => {
   const goToPreviousPage = () => {
     if (currentPage > 1) {
       setCurrentPage(currentPage - 1);
@@ -14,7 +14,7 @@ const Pagination = ({ currentPage, setCurrentPage, pagesArray, totalPages, handl
   };
 
   return <>
-    { totalPages &&
+    { totalPages != 0 &&
       (
         <section className='pagination'>
           <button 
