@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from "react";
 
-const EmployeeItem = ({ employee, onUpdate, onDelete }) => {
+const EmployeeItem = ({ employee, onUpdate, onDelete, onEmployeeClick }) => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedEmployee, setEditedEmployee] = useState({ ...employee });
   const [isDeleting, setIsDeleting] = useState(false);
@@ -28,17 +28,17 @@ const EmployeeItem = ({ employee, onUpdate, onDelete }) => {
   }, [employee]);
 
   return (
-    <div className="employee-item">
+    <section className="employee-item" id={`employee-${employee.id}`}>
       <div className="employee-header">
         <input
+          className="employee-name"
           type="text"
           name="name"
           value={editedEmployee.name}
           onChange={handleChange}
           disabled={!isEditing}
-      
         />
-        <div className="employee-actions">
+        <section className="employee-actions">
           {isEditing ? (
             <>
               <button className="btn-save" onClick={handleSave}>
@@ -51,10 +51,10 @@ const EmployeeItem = ({ employee, onUpdate, onDelete }) => {
           ) : isDeleting ? (
             <>
               <button className="btn-confirm" onClick={() => onDelete(employee.id)}>
-                <i class="fa-solid fa-check"></i>
+                <i className="fa-solid fa-check"></i>
               </button>
               <button className="btn-cancel" onClick={() => setIsDeleting(false)}>
-                <i class="fa-solid fa-xmark"></i>
+                <i className="fa-solid fa-xmark"></i>
               </button>
             </>
           ) : (
@@ -68,11 +68,11 @@ const EmployeeItem = ({ employee, onUpdate, onDelete }) => {
             </>
           )
         }
-        </div>
+        </section>
       </div>
       <hr />
-      <div className="employee-details">
-        <div className="detail-item">
+      <section className="employee-details">
+        <section className="detail-item">
           <i className="fa-solid fa-envelope"></i>
           <span className="label">Email:</span>
           <input 
@@ -82,8 +82,8 @@ const EmployeeItem = ({ employee, onUpdate, onDelete }) => {
             onChange={handleChange}
             disabled={!isEditing}
           />
-        </div>
-        <div className="detail-item">
+        </section>
+        <section className="detail-item">
           <i className="fa-solid fa-phone"></i>
           <span className="label">Phone:</span>
           <input 
@@ -93,9 +93,9 @@ const EmployeeItem = ({ employee, onUpdate, onDelete }) => {
             onChange={handleChange}
             disabled={!isEditing}
           />
-        </div>
-        <div className="detail-item">
-          <i className="fa-solid fa-user"></i>
+        </section>
+        <section className="detail-item">
+          <i className="fa-solid fa-building"></i>
           <span className="label">Department:</span>
           <input 
             type="text"
@@ -104,9 +104,9 @@ const EmployeeItem = ({ employee, onUpdate, onDelete }) => {
             onChange={handleChange}
             disabled={!isEditing}
           />
-        </div>
-      </div>
-    </div>
+        </section>
+      </section>
+    </section>
   );
 };
 

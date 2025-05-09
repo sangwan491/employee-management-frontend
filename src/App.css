@@ -1,66 +1,128 @@
 * {
   margin: 0;
   padding: 0;
+  box-sizing: border-box;
 }
-body {
+button {
+  cursor: pointer;
+}
+header {
   font-family: 'Roboto', sans-serif;
-  margin: 0;
-  color: white;
-}
-textarea:focus,
-input:focus {
-  outline: none;
-}
-.header {
   background-color: blueviolet;
-  height: 52px;
+  height: 80px;
   display: flex;
   align-items: center;
   justify-content: center;
   font-weight: bold;
   font-size: x-large;
-  padding: 12px;
+  color: white;
+}
+footer {
+  font-family: 'Roboto', sans-serif;
+  position: fixed;
+  bottom: 0;
+  width: 100%;
+  background-color: white;
+  height: 80px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+footer .pagination {
+  font-weight: bold;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 20px;
+}
+footer .pagination .pagination-button {
+  border: none;
+  background-color: blueviolet;
+  color: white;
+  border-radius: 50%;
+  font-weight: 700;
+  height: 30px;
+  width: 30px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+footer .pagination .pagination-button i {
+  font-size: 18px;
+}
+footer .pagination .pagination-numbers {
+  height: 50px;
+  background-color: blueviolet;
+  color: white;
+  border-radius: 50px;
+  display: flex;
+  align-items: center;
+  padding-left: 10px;
+  padding-right: 10px;
+}
+footer .pagination .pagination-number {
+  cursor: pointer;
+  height: 30px;
+  width: 30px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+footer .pagination .pagination-number.active {
+  color: blueviolet;
+  background-color: white;
 }
 .app-content {
+  font-family: 'Roboto', sans-serif;
   padding: 20px;
+  color: white;
+  box-sizing: border-box;
+}
+.app-content input {
+  width: 0;
+}
+.app-content textarea:focus,
+.app-content input:focus {
+  outline: none;
 }
 .app-content button {
   border: none;
   background-color: blueviolet;
-  font-family: 'Roboto', sans-serif;
   color: white;
   padding: 12px;
   border-radius: 8px;
   font-weight: 700;
 }
-.employee-form {
+.app-content .employee-form {
   background: blueviolet;
   padding: 20px;
   border-radius: 5px;
   margin: 20px auto;
-  width: 325px;
+  max-width: 26rem;
+  min-width: 16rem;
 }
-.form-group {
+.app-content .form-group {
   margin-bottom: 15px;
 }
-.form-group label {
+.app-content .form-group label {
   display: block;
   margin-bottom: 5px;
   font-weight: bold;
 }
-.form-group input {
+.app-content .form-group input {
   width: 100%;
   padding: 8px;
   border: 1px solid #ddd;
   border-radius: 4px;
   box-sizing: border-box;
 }
-.form-actions {
+.app-content .form-actions {
   display: flex;
   justify-content: center;
   gap: 12px;
 }
-.form-actions button {
+.app-content .form-actions button {
   background-color: white;
   border-radius: 8px;
   padding: 8px;
@@ -68,32 +130,63 @@ input:focus {
   width: 64px;
   font-weight: bold;
 }
-.search-bar-container {
-  margin-top: 16px;
-  margin-bottom: 40px;
-}
-.search-input-wrapper {
-  color: black;
-  width: 20rem;
-  margin: 0 auto;
+.app-content .search-container {
   display: flex;
   align-items: center;
+  justify-content: space-between;
+  max-width: 26rem;
+  min-width: 16rem;
+  margin: 10px auto 40px auto;
+  gap: 12px;
+}
+.app-content .search-bar {
+  flex-grow: 1;
+  display: flex;
   gap: 0.5rem;
+  align-items: center;
+  padding: 10px;
   border: 2px solid blueviolet;
   border-radius: 0.75rem;
-  padding: 0.5rem;
+  color: blueviolet;
 }
-.search-input {
+.app-content .toggle-switch {
+  display: flex;
+  border-radius: 50px;
+  border: 2px solid blueviolet;
+  background-color: blueviolet;
+}
+.app-content .toggle-option {
+  padding: 10px;
+  font-size: 14px;
+  transition: all 0.3s ease;
+  color: white;
+  margin: 0.8px;
+  border-radius: 50px;
+}
+.app-content .toggle-option.active {
+  background-color: white;
+  color: blueviolet;
+}
+.app-content .search-input {
   flex-grow: 1;
   border: none;
 }
-.employee-list {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 16px;
+.app-content .employee-item {
+  max-width: 26rem;
+  min-width: 16rem;
+  margin: 0 auto 16px auto;
+  padding: 24px;
+  border-radius: 8px;
+  background-color: blueviolet;
+  color: white;
 }
-.employee-header {
+.app-content .employee-item input {
+  border: none;
+  background-color: transparent;
+  color: inherit;
+  font: inherit;
+}
+.app-content .employee-header {
   display: flex;
   justify-content: space-between;
   margin-bottom: 4px;
@@ -101,51 +194,57 @@ input:focus {
   font-size: 20px;
   font-weight: bold;
 }
-.employee-actions {
+.app-content .employee-name {
+  flex: 1;
+}
+.app-content .employee-actions {
   display: flex;
   justify-content: space-between;
   gap: 8px;
 }
-.employee-actions button {
+.app-content .employee-actions button {
   background-color: white;
   border-radius: 4px;
   color: blueviolet;
   padding: 6px;
   font-size: 14px;
 }
-.employee-item {
-  width: 100%;
-  max-width: 360px;
-  padding: 24px;
-  background-color: blueviolet;
-  border-radius: 8px;
-  color: white;
-}
-.employee-item input {
-  border: none;
-  background-color: transparent;
-  color: inherit;
-  font: inherit;
-}
-.employee-details {
+.app-content .employee-details {
   display: flex;
   flex-direction: column;
   gap: 16px;
   margin-top: 24px;
 }
-.detail-item {
+.app-content .detail-item {
   display: flex;
   align-items: center;
   gap: 10px;
 }
-.detail-item i {
+.app-content .detail-item i {
   font-size: 18px;
 }
-.detail-item input {
-  flex: 1;
+.app-content .detail-item > :last-child {
+  flex-grow: 1;
   text-align: right;
 }
-.label {
+.app-content .detail-item .manager-link {
+  flex: 1;
+  text-align: right;
+  cursor: pointer;
+  text-decoration: underline;
+}
+.app-content .detail-item .manager-link:hover {
   font-weight: bold;
+}
+.app-content .label {
+  font-weight: bold;
+}
+.app-content .no-employees-found,
+.app-content .loading {
+  color: blueviolet;
+}
+.app-content .pagination {
+  display: flex;
+  background: white;
 }
 /*# sourceMappingURL=App.css.map */

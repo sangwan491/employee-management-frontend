@@ -1,67 +1,75 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import SearchBar from './components/SearchBar';
 import EmployeeForm from './components/EmployeeForm';
 import EmployeeList from './components/EmployeeList';
-import './App.css';
-
+import Pagination from './components/Pagination';
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import './App.css';
 
-const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || 'http://localhost:8080/api';
+import { searchEmployees, createEmployee, updateEmployee, deleteEmployee } from './utils/api';
+import { calculatePagesArray } from './utils/pagination';
+import { validateEmployee } from './utils/validation';    
 
 function App() {
-  const [value, setValue] = useState("");
   const [isAdding, setAdding] = useState(false);
-  const [employees, setEmployees] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [totalPages, setTotalPages] = useState(0);
+  const [searchTerm, setSearchTerm] = useState("");
+  const [employeePages, setEmployeesPages] = useState({});
+  const [fetchKey, setFetchKey] = useState(0);
 
-  useEffect(() => {
-    fetchEmployees();
-  }, []);
+  const employees = useMemo(() => {
+    return employeePages[currentPage] || [];
+  }, [currentPage, employeePages]);
 
-  const fetchEmployees = async () => {
+  const pagesArray = useMemo(() => 
+    calculatePagesArray(currentPage, totalPages),
+  [currentPage, totalPages]);
+
+  const handleSearch = async () => {
     setIsLoading(true);
-    
     try {
-      const response = await fetch(`${API_BASE_URL}/employees`);
-      
-      const jsonResponse = await response.json();
-
-      if (!response.ok) {
-        throw new Error(jsonResponse.error);
-      }
-      
-      setEmployees(jsonResponse);
+      const jsonResponse = await searchEmployees(searchTerm, currentPage);
+      setTotalPages(jsonResponse.pages);
+      setEmployeesPages(prevPages => ({
+        ...prevPages,
+        [currentPage]: jsonResponse.employees
+      }));
     } catch (err) {
-      console.log(err);
-      toast.error(`Failed to load employees: ${err.message}`);
+      console.error('Search error:', err);
+      toast.error(`Search failed: ${err.message}`);
     } finally {
       setIsLoading(false);
     }
   };
 
+  const refreshEmployeeData = () => {
+    setEmployeesPages({});
+    setFetchKey(prev => prev + 1);
+  };
+  
+  useEffect(() => {
+    if (employeePages[currentPage]) {
+      return;
+    }
+    handleSearch();
+  }, [currentPage, fetchKey]);
 
   const onSave = async (newEmployee) => {
-    setIsLoading(true);
-    
-    try {
-      const response = await fetch(`${API_BASE_URL}/employees`, {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(newEmployee),
-      });
-      
-      const jsonResponse = await response.json();
-      
-      if (!response.ok) {
-        throw new Error(jsonResponse.error);
-      }
+    const validationErrors = validateEmployee(newEmployee);
+    if (validationErrors.length > 0) {
+      validationErrors.forEach(error => toast.error(error));
+      return;
+    }
 
-      setEmployees((prevEmployees) => [...prevEmployees, newEmployee]);
-      
-      toast.success(jsonResponse.message);
+    setIsLoading(true);
+    try {
+      const response = await createEmployee(newEmployee);
+      refreshEmployeeData();
+      setCurrentPage(1);
+      toast.success(response.message);
       setAdding(false);  
     } catch (err) {
       console.log(err);
@@ -75,32 +83,26 @@ function App() {
     setAdding(false);
   };
 
-
   const onUpdate = async (updatedEmployee) => {
+    const validationErrors = validateEmployee(updatedEmployee);
+    if (validationErrors.length > 0) {
+      validationErrors.forEach(error => toast.error(error));
+      return;
+    }
+
     setIsLoading(true);
-    
     try {
-      const response = await fetch(`${API_BASE_URL}/employees/${updatedEmployee.id}`, {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(updatedEmployee),
+      const response = await updateEmployee(updatedEmployee);
+      setEmployeesPages((prevPages) => {
+        const newPages = { ...prevPages };
+        Object.keys(newPages).forEach(page => {
+          newPages[page] = newPages[page].map(emp =>
+            emp.id === updatedEmployee.id ? updatedEmployee : emp
+          );
+        });
+        return newPages;
       });
-      
-      const jsonResponse = await response.json();
-
-      if (!response.ok) {
-        throw new Error(jsonResponse.error);
-      }
-      
-      setEmployees((prevEmployees) => {
-        return prevEmployees.map(employee => 
-          employee.id === updatedEmployee.id ? updatedEmployee : employee
-        );
-      });
-
-      toast.success(jsonResponse.message);
+      toast.success(response.message);
     } catch (err) {
       console.log(`err: ${err}`);
       toast.error(`Failed to update employee: ${err.message}`);
@@ -109,10 +111,12 @@ function App() {
     }
   };
 
-
   const onDelete = async (id) => {
     toast.promise(
-      deleteEmployee(id),
+      deleteEmployee(id).then(() => {
+        refreshEmployeeData();
+        setCurrentPage(1);
+      }),
       {
         pending: 'Deleting employee...',
         success: 'Employee deleted successfully',
@@ -124,62 +128,29 @@ function App() {
       }
     );
   };
-  
-  const deleteEmployee = async (id) => {
-    setIsLoading(true);
-    
-    try {
-      const response = await fetch(`${API_BASE_URL}/employees/${id}`, {
-        method: 'DELETE',
-      });
-      
-      const jsonResponse = await response.json();
-
-      if (!response.ok) {
-        throw new Error(jsonResponse.error);
-      }
-      
-      setEmployees((prevEmployees) =>
-        prevEmployees.filter(employee => employee.id !== id)
-      );
-
-      return jsonResponse;
-    } catch (err) {
-      console.log(err);
-      throw err;
-    } finally {
-      setIsLoading(false);
-    }
-  };
-
-  const filteredEmployees = employees.filter(employee => {
-    if (!value) return true;
-    return JSON.stringify(employee).toLowerCase().includes(value.toLowerCase());
-  });
 
   return (
-    <div className="app">      
-      <div className='header'>
+    <>      
+      <header>
         Employee Management
-      </div>
+      </header>
       
-      <div className="app-content">
-      <ToastContainer
-        position="top-right"
-        autoClose={3000}
-        hideProgressBar={false}
-        newestOnTop
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
+      <main className="app-content">
+        <ToastContainer
+          position="top-right"
+          autoClose={3000}
+          hideProgressBar={false}
+          newestOnTop
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
 
         {isAdding ? (
           <EmployeeForm 
-            employees={employees} 
-            setEmployees={setEmployees} 
+            employees={employees}
             onSave={onSave} 
             onCancel={onCancel}
             isLoading={isLoading}
@@ -194,20 +165,34 @@ function App() {
           </button>
         )}
         
-        <SearchBar value={value} setValue={setValue} />
+        <SearchBar 
+          value={searchTerm} 
+          setValue={setSearchTerm} 
+          setCurrentPage={setCurrentPage}
+          refreshEmployeeData={refreshEmployeeData}
+        />
         
-        {isLoading && !isAdding ? (
-          <div className="loading">Loading employees...</div>
+        {isLoading ? (
+          <span className="loading">Loading employees...</span>
         ) : (
-          <EmployeeList 
-            employees={filteredEmployees}
+          <EmployeeList
+            employees={employees}
             onUpdate={onUpdate}
             onDelete={onDelete}
             isLoading={isLoading}
           />
         )}
-      </div>
-    </div>
+      </main>
+
+      <footer>
+        <Pagination 
+          currentPage={currentPage} 
+          setCurrentPage={setCurrentPage} 
+          pagesArray={pagesArray} 
+          totalPages={totalPages}
+        />
+      </footer>
+    </>
   );
 }
 
